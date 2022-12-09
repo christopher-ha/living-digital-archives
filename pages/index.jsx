@@ -1,17 +1,16 @@
 import Head from "next/head";
 import css from "styled-jsx/css";
 import styles from "../styles/Home.module.css";
-import { Canvas, useLoader } from "@react-three/fiber";
+import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import Sphere from "@/components/Sphere/Sphere.js";
 import { OrbitControls } from "@react-three/drei";
 import { TextureLoader } from "three/src/loaders/TextureLoader";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function Home({ data }) {
   const { posts } = data.response;
-  // console.log(posts[0].photos[0].original_size.url);
-  // const [posts, setPosts] = useState(posts)
   const [filteredPosts, setFilteredPosts] = useState([]);
+  const sphereRef = useRef();
 
   useEffect(() => {
     let data = [];
@@ -41,22 +40,22 @@ function Home({ data }) {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        {/* {posts?.map((post) => {
-        return (
-          <div key={post.id}>
-            <div dangerouslySetInnerHTML={{ __html: post.caption }} />
-            <img src={post.photos[0].original_size.url} />
-          </div>
-        );
-      })} */}
-
         <div className={styles.scene}>
           <Canvas className={styles.canvas} shadows={true}>
             <OrbitControls />
             <ambientLight color={"white"} intensity={0.3} />
-            <fog attach="fog" args={["black", 30, 80]} />
-            <color attach="background" args={["black"]} />
-            {posts?.map((post, index) => {
+            <fog attach="fog" args={["white", 10, 75]} />
+            <color attach="background" args={["white"]} />
+
+            {/* {useFrame(() => {
+              sphereRef.current.rotation.set(
+                camera.rotation.x,
+                camera.rotation.y,
+                camera.rotation.z
+              );
+            })} */}
+
+            {filteredPosts?.map((post, index) => {
               return (
                 <mesh
                   key={post.id}
@@ -65,18 +64,24 @@ function Home({ data }) {
                     index * 2 - 50,
                     Math.random() * 100 - 50,
                   ]}
-                  scale={3}
+                  scale={5}
+                  ref={sphereRef}
                 >
                   <sphereBufferGeometry />
-                  <meshBasicMaterial
-                    // map={}
-                    wireframe
+                  <meshPhysicalMaterial
+                    map={new TextureLoader().load(post.image)}
+                    metalness={0.2}
+                    roughness={0}
+                    clearcoat={0.8}
                   />
+                  {/* <meshBasicMaterial
+                    map={new TextureLoader().load(post.image)}
+                  /> */}
                 </mesh>
               );
             })}
-            <gridHelper />
-            <axesHelper />
+            {/* <gridHelper />
+            <axesHelper /> */}
           </Canvas>
         </div>
       </div>
