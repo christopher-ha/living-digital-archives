@@ -1,4 +1,3 @@
-import { Canvas, useThree, extend, useFrame } from "@react-three/fiber";
 import {
   Bounds,
   useBounds,
@@ -6,20 +5,12 @@ import {
   Environment,
 } from "@react-three/drei";
 import React, { useEffect, useRef, useState } from "react";
-import { TextureLoader } from "three/src/loaders/TextureLoader";
 import Sphere from "@/components/Sphere";
 
 export default function Experience({ filteredPosts }) {
-  const groupRef = useRef();
-
-  // useFrame((state, delta) => {
-  // groupRef.current.rotation.y += delta * 0.05;
-  // sphereRef.current.rotation.y += delta;
-  // });
-
   return (
     <>
-      <Environment preset="lobby" blur={1} />
+      <Environment preset="studio" blur={1} />
       <OrbitControls
         makeDefault
         minPolarAngle={0}
@@ -31,7 +22,7 @@ export default function Experience({ filteredPosts }) {
 
       <Bounds>
         <SelectToZoom>
-          <group ref={groupRef}>
+          <group>
             {filteredPosts?.map((post, index) => {
               return <Sphere key={post.id} post={post} index={index} />;
             })}
