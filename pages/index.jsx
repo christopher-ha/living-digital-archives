@@ -2,15 +2,12 @@ import Head from "next/head";
 import css from "styled-jsx/css";
 import styles from "../styles/Home.module.css";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
-import Sphere from "@/components/Sphere/Sphere.js";
-import { OrbitControls } from "@react-three/drei";
-import { TextureLoader } from "three/src/loaders/TextureLoader";
 import { useEffect, useRef, useState } from "react";
+import Experience from "@/components/Experience";
 
 function Home({ data }) {
   const { posts } = data.response;
   const [filteredPosts, setFilteredPosts] = useState([]);
-  const sphereRef = useRef();
 
   useEffect(() => {
     let data = [];
@@ -41,47 +38,14 @@ function Home({ data }) {
         </Head>
 
         <div className={styles.scene}>
-          <Canvas className={styles.canvas} shadows={true}>
-            <OrbitControls />
-            <ambientLight color={"white"} intensity={0.3} />
-            <fog attach="fog" args={["white", 10, 75]} />
-            <color attach="background" args={["white"]} />
-
-            {/* {useFrame(() => {
-              sphereRef.current.rotation.set(
-                camera.rotation.x,
-                camera.rotation.y,
-                camera.rotation.z
-              );
-            })} */}
-
-            {filteredPosts?.map((post, index) => {
-              return (
-                <mesh
-                  key={post.id}
-                  position={[
-                    Math.random() * 100 - 50,
-                    index * 2 - 50,
-                    Math.random() * 100 - 50,
-                  ]}
-                  scale={5}
-                  ref={sphereRef}
-                >
-                  <sphereBufferGeometry />
-                  <meshPhysicalMaterial
-                    map={new TextureLoader().load(post.image)}
-                    metalness={0.2}
-                    roughness={0}
-                    clearcoat={0.8}
-                  />
-                  {/* <meshBasicMaterial
-                    map={new TextureLoader().load(post.image)}
-                  /> */}
-                </mesh>
-              );
-            })}
-            {/* <gridHelper />
-            <axesHelper /> */}
+          <Canvas
+            className={styles.canvas}
+            shadows={true}
+            onPointerMissed={() => {
+              console.log("You missed!");
+            }}
+          >
+            <Experience filteredPosts={filteredPosts} />
           </Canvas>
         </div>
       </div>
