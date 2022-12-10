@@ -1,16 +1,16 @@
 import { Canvas, useThree, extend, useFrame } from "@react-three/fiber";
 import { Bounds, useBounds, OrbitControls } from "@react-three/drei";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { TextureLoader } from "three/src/loaders/TextureLoader";
 import Sphere from "@/components/Sphere";
 
 export default function Experience({ filteredPosts }) {
   const groupRef = useRef();
 
-  useFrame((state, delta) => {
-    // groupRef.current.rotation.y += delta * 0.05;
-    // sphereRef.current.rotation.y += delta;
-  });
+  // useFrame((state, delta) => {
+  // groupRef.current.rotation.y += delta * 0.05;
+  // sphereRef.current.rotation.y += delta;
+  // });
 
   return (
     <>
@@ -40,18 +40,19 @@ export default function Experience({ filteredPosts }) {
 
 // This component wraps children in a group with a click handler
 // Clicking any object will refresh and fit bounds
-function SelectToZoom({ children }) {
+function SelectToZoom({ children, post }) {
   const api = useBounds();
+
   return (
     <group
       onClick={(e) => (
         e.stopPropagation(), e.delta <= 2 && api.refresh(e.object).fit()
       )}
       // onPointerMissed={(e) => e.button === 0 && api.refresh().fit()}
-      onPointerMissed={(e) =>
+      onPointerMissed={(e) => {
         e.button === 0 &&
-        api.refresh().to({ position: [0, 0, 0], target: [0, 0, 0] })
-      }
+          api.refresh().to({ position: [0, 0, 0], target: [0, 0, 0] });
+      }}
     >
       {children}
     </group>

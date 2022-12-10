@@ -1,22 +1,26 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { TextureLoader } from "three/src/loaders/TextureLoader";
 import { Camera } from "three";
+import Link from "next/link";
 
 export default function Sphere({ post, index }) {
   const sphereRef = useRef();
+  // const [isClicked, setIsClicked] = useState(false);
 
   useFrame((state, delta) => {
     sphereRef.current.rotation.y += delta * 0.1;
-    // sphereRef.lookAt(state.camera.position);
-    // sphereRef.current.scale += delta;
-    // sphereRef.current.rotation.x += delta;
-    // sphereRef.current.rotation.z += delta;
   });
 
-  // const eventHandler = () => {
-  //   console.log("event occured");
-  // };
+  let isClicked = false;
+
+  const handleClick = () => {
+    if (isClicked === false) {
+      return (isClicked = true);
+    } else {
+      window.open(post.url);
+    }
+  };
 
   return (
     <mesh
@@ -28,7 +32,7 @@ export default function Sphere({ post, index }) {
       ]}
       scale={5}
       ref={sphereRef}
-      // onClick={eventHandler}
+      onClick={handleClick}
     >
       <sphereBufferGeometry />
       <meshPhysicalMaterial
