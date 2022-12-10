@@ -14,18 +14,24 @@ export default function Experience({ filteredPosts }) {
 
   return (
     <>
-      <OrbitControls />
+      <OrbitControls
+        makeDefault
+        minPolarAngle={0}
+        maxPolarAngle={Math.PI / 1.75}
+      />
       <ambientLight color={"white"} intensity={0.3} />
       <fog attach="fog" args={["white", 10, 75]} />
       <color attach="background" args={["white"]} />
 
       <Bounds>
-        <SelectToZoom ref={groupRef}>
-          {filteredPosts?.map((post, index) => {
-            return <Sphere key={post.id} post={post} index={index} />;
-          })}
-          {/* <gridHelper />
+        <SelectToZoom>
+          <group ref={groupRef}>
+            {filteredPosts?.map((post, index) => {
+              return <Sphere key={post.id} post={post} index={index} />;
+            })}
+            {/* <gridHelper />
             <axesHelper /> */}
+          </group>
         </SelectToZoom>
       </Bounds>
     </>
@@ -41,7 +47,11 @@ function SelectToZoom({ children }) {
       onClick={(e) => (
         e.stopPropagation(), e.delta <= 2 && api.refresh(e.object).fit()
       )}
-      onPointerMissed={(e) => e.button === 0 && api.refresh().fit()}
+      // onPointerMissed={(e) => e.button === 0 && api.refresh().fit()}
+      onPointerMissed={(e) =>
+        e.button === 0 &&
+        api.refresh().to({ position: [0, 0, 0], target: [0, 0, 0] })
+      }
     >
       {children}
     </group>

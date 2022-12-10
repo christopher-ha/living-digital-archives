@@ -41,9 +41,9 @@ function Home({ data }) {
           <Canvas
             className={styles.canvas}
             shadows={true}
-            onPointerMissed={() => {
-              console.log("You missed!");
-            }}
+            // onPointerMissed={() => {
+            //   console.log("You missed!");
+            // }}
           >
             <Experience filteredPosts={filteredPosts} />
           </Canvas>
