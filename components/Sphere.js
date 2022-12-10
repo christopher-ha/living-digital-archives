@@ -3,22 +3,23 @@ import { useFrame } from "@react-three/fiber";
 import { TextureLoader } from "three/src/loaders/TextureLoader";
 import { Camera } from "three";
 import Link from "next/link";
+import { MeshReflectorMaterial } from "@react-three/drei";
 
 export default function Sphere({ post, index }) {
   const sphereRef = useRef();
+  const isClicked = useRef(false);
   // const [isClicked, setIsClicked] = useState(false);
 
   useFrame((state, delta) => {
     sphereRef.current.rotation.y += delta * 0.1;
   });
 
-  let isClicked = false;
-
   const handleClick = () => {
-    if (isClicked === false) {
-      return (isClicked = true);
+    if (isClicked.current === false) {
+      return (isClicked.current = true);
     } else {
-      window.open(post.url);
+      console.log("hit");
+      // window.open(post.url);
     }
   };
 
@@ -33,13 +34,16 @@ export default function Sphere({ post, index }) {
       scale={5}
       ref={sphereRef}
       onClick={handleClick}
+      // onPointerDown={() => {
+      //   pointerDownTimeStamp;
+      // }}
     >
       <sphereBufferGeometry />
       <meshPhysicalMaterial
         map={new TextureLoader().load(post.image)}
-        metalness={0.2}
-        roughness={0}
-        clearcoat={0.8}
+        roughness={1}
+        metalness={0.05}
+        clearcoat={0.05}
       />
     </mesh>
   );

@@ -1,5 +1,10 @@
 import { Canvas, useThree, extend, useFrame } from "@react-three/fiber";
-import { Bounds, useBounds, OrbitControls } from "@react-three/drei";
+import {
+  Bounds,
+  useBounds,
+  OrbitControls,
+  Environment,
+} from "@react-three/drei";
 import React, { useEffect, useRef, useState } from "react";
 import { TextureLoader } from "three/src/loaders/TextureLoader";
 import Sphere from "@/components/Sphere";
@@ -14,6 +19,7 @@ export default function Experience({ filteredPosts }) {
 
   return (
     <>
+      <Environment preset="lobby" blur={1} />
       <OrbitControls
         makeDefault
         minPolarAngle={0}
