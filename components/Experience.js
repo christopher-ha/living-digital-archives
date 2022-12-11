@@ -10,7 +10,7 @@ import Sphere from "@/components/Sphere";
 export default function Experience({ filteredPosts }) {
   return (
     <>
-      <Environment preset="studio" blur={1} />
+      <Environment preset="studio" blur={1} resolution={32} />
       <OrbitControls
         makeDefault
         minPolarAngle={0}
