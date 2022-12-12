@@ -11,8 +11,6 @@ function Home({ data }) {
   const { blog, posts } = data.response;
   const [filteredPosts, setFilteredPosts] = useState([]);
   const profile = router.query.profile;
-  // console.log(data);
-  // console.log(router.query.profile);
 
   const extractFirstTumblrUrl = (string) => {
     // Use a regular expression to find the first url in the string that
@@ -88,7 +86,14 @@ function Home({ data }) {
           <div>
             {/* If there is a profile in the query, render their blog url and avatar */}
             {/* <img style={{ borderRadius: 4 }} src={blog.avatar[3].url} /> */}
-            <p>{blog.url}</p>
+            {/* <p>{blog.url}</p> */}
+
+            {/* Secret message for Valentina <3 */}
+            <p>
+              {profile === "vallllentina"
+                ? `i can stalk your Tumblr from here now <3 i love you`
+                : blog?.url}{" "}
+            </p>
           </div>
         )}
       </div>
@@ -122,9 +127,21 @@ export async function getServerSideProps({ query }) {
     const res = await fetch(
       `https://api.tumblr.com/v2/blog/${profile}.tumblr.com/posts/photo?api_key=${process.env.API_KEY}&limit=50`
     );
-    data = await res.json();
-  } else {
+
+    // If the Tumblr blog exists (200), send the data
+    if (res.status === 200) {
+      data = await res.json();
+      // If the Tumblr blog doesn't exist (404), throw error and send data from oneterabytekilobyteage
+    } else if (res.status === 404) {
+      console.error(`There is no Tumblr blog with the username ${profile}`);
+      const res = await fetch(
+        `https://api.tumblr.com/v2/blog/oneterabyteofkilobyteage.tumblr.com/posts/photo?api_key=${process.env.API_KEY}&limit=50`
+      );
+      data = await res.json();
+    }
+
     // If the query params are empty, default to oneterabyteofkilobyteage.
+  } else {
     const res = await fetch(
       `https://api.tumblr.com/v2/blog/oneterabyteofkilobyteage.tumblr.com/posts/photo?api_key=${process.env.API_KEY}&limit=50`
     );
