@@ -4,7 +4,6 @@ import {
   OrbitControls,
   Environment,
 } from "@react-three/drei";
-import React, { useEffect, useRef, useState } from "react";
 import Sphere from "@/components/Sphere";
 
 export default function Experience({ filteredPosts }) {
@@ -39,6 +38,7 @@ export default function Experience({ filteredPosts }) {
 // Clicking any object will refresh and fit bounds
 function SelectToZoom({ children, post }) {
   const api = useBounds();
+  const isMobile = window.innerWidth <= 600;
 
   return (
     <group
@@ -46,9 +46,15 @@ function SelectToZoom({ children, post }) {
         e.stopPropagation(), e.delta <= 2 && api.refresh(e.object).fit()
       )}
       // onPointerMissed={(e) => e.button === 0 && api.refresh().fit()}
+      // If the user is on mobile, disable recentering the camera when the user taps onto canvas. During testing it created a negative user experience due to a smaller screen, but works great on desktop.
       onPointerMissed={(e) => {
-        e.button === 0 &&
-          api.refresh().to({ position: [0, 0, 0], target: [0, 0, 0] });
+        // if (isMobile) {
+        //   e.button === 0 && api.refresh();
+        // } else {
+        //   e.button === 0 &&
+        //     api.refresh().to({ position: [0, 0, 0], target: [0, 0, 0] });
+        // }
+        e.button === 0 && api.refresh();
       }}
     >
       {children}

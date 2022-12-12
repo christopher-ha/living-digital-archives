@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { TextureLoader } from "three/src/loaders/TextureLoader";
 import { Float } from "@react-three/drei";
