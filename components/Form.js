@@ -46,13 +46,13 @@ export default function Form() {
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit} autocomplete="off">
+    <form className={styles.form} onSubmit={handleSubmit} autoComplete="off">
       <input
         className={styles.form__input}
         type="text"
         name="profile"
         placeholder="Paste your Tumblr handle"
-        spellcheck="false"
+        spellCheck="false"
       />
       <button type="submit" className={styles.form__submit}>
         Enter
