@@ -6,16 +6,7 @@ export default function Form() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const inputValue = event.target.elements.profile.value;
-
-    // const parseURL = (url) => {
-    //   const parsedURL = new URL(url);
-    //   if (parsedURL.hostname.includes(".tumblr.com")) {
-    //     return parsedURL.hostname.split(".")[0];
-    //   } else {
-    //     return console.error("This is not a Tumblr URL");
-    //   }
-    // };
+    const inputValue = event.target.elements.profile.value.toLowerCase();
 
     const isValidURL = (string) => {
       let url;
@@ -55,13 +46,17 @@ export default function Form() {
   };
 
   return (
-    <form className={styles.input} onSubmit={handleSubmit}>
+    <form className={styles.form} onSubmit={handleSubmit} autocomplete="off">
       <input
+        className={styles.form__input}
         type="text"
         name="profile"
         placeholder="Paste your Tumblr handle"
+        spellcheck="false"
       />
-      <button type="submit">Submit</button>
+      <button type="submit" className={styles.form__submit}>
+        Enter
+      </button>
     </form>
   );
 }

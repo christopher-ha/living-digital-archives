@@ -51,8 +51,8 @@ function SelectToZoom({ children, post }) {
         // if (isMobile) {
         //   e.button === 0 && api.refresh();
         // } else {
-        //   e.button === 0 &&
-        //     api.refresh().to({ position: [0, 0, 0], target: [0, 0, 0] });
+        // e.button === 0 &&
+        //   api.refresh().to({ position: [0, 0, 0], target: [0, 0, 0] });
         // }
         e.button === 0 && api.refresh();
       }}
