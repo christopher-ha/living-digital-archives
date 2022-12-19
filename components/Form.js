@@ -1,11 +1,12 @@
 import { useRouter } from "next/router";
 import styles from "@/styles/pages/Home.module.scss";
 
-export default function Form() {
+export default function Form({ controlsRef }) {
   const router = useRouter();
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
     const inputValue = event.target.elements.profile.value.toLowerCase();
 
     const isValidURL = (string) => {
@@ -49,7 +50,7 @@ export default function Form() {
     <form className={styles.form} onSubmit={handleSubmit} autoComplete="off">
       <input
         className={styles.form__input}
-        type="text"
+        type="search"
         name="profile"
         placeholder="Paste your Tumblr handle"
         spellCheck="false"

@@ -30,38 +30,38 @@ export default function Sphere({ post, index }) {
   };
 
   return (
-    <Float>
-      <mesh
-        key={post.id}
-        position={[
-          Math.random() * 100 - 50,
-          index * 2 - 50,
-          Math.random() * 100 - 50,
-        ]}
-        scale={6.5}
-        ref={sphereRef}
-        onClick={handleClick}
-        // Store the time of the user beginning their click
-        onPointerDown={() => {
-          pointerDownTimestampRef.current = Date.now();
-        }}
-        // Store the time of the user ending their click
-        onPointerUp={() => {
-          pointerUpTimestampRef.current = Date.now();
-        }}
-        // When clicking off the object to another sphere or on the canvas, reset the focus back to false.
-        onPointerMissed={() => {
-          isFocussed.current = false;
-        }}
-      >
-        <sphereGeometry />
-        <meshPhysicalMaterial
-          map={new TextureLoader().load(post.image)}
-          roughness={1}
-          metalness={0.05}
-          clearcoat={0.01}
-        />
-      </mesh>
-    </Float>
+    // <Float>
+    <mesh
+      key={post.id}
+      position={[
+        Math.random() * 100 + -50,
+        index * 2 - 50,
+        Math.random() * 100 + -50,
+      ]}
+      scale={6.5}
+      ref={sphereRef}
+      onClick={handleClick}
+      // Store the time of the user beginning their click
+      onPointerDown={() => {
+        pointerDownTimestampRef.current = Date.now();
+      }}
+      // Store the time of the user ending their click
+      onPointerUp={() => {
+        pointerUpTimestampRef.current = Date.now();
+      }}
+      // When clicking off the object to another sphere or on the canvas, reset the focus back to false.
+      onPointerMissed={() => {
+        isFocussed.current = false;
+      }}
+    >
+      <sphereGeometry />
+      <meshPhysicalMaterial
+        map={new TextureLoader().load(post.image)}
+        roughness={1}
+        metalness={0.05}
+        clearcoat={0.01}
+      />
+    </mesh>
+    // </Float>
   );
 }

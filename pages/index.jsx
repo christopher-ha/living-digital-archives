@@ -1,10 +1,10 @@
-import Head from "next/head";
 import styles from "@/styles/pages/Home.module.scss";
 import { Canvas } from "@react-three/fiber";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, Suspense } from "react";
 import Experience from "@/components/Experience";
 import Form from "@/components/Form";
 import { useRouter } from "next/router";
+import { Loader, OrbitControls } from "@react-three/drei";
 
 function Home({ data }) {
   const router = useRouter();
@@ -15,6 +15,7 @@ function Home({ data }) {
   const extractFirstTumblrUrl = (string) => {
     // Use a regular expression to find the first url in the string that
     // starts with "https://64.media.tumblr.com/"
+
     const regex = /https:\/\/64\.media\.tumblr\.com\/[^\s]+/;
     const matches = string.match(regex);
     if (matches && matches.length > 0) {
@@ -54,11 +55,11 @@ function Home({ data }) {
         });
       }
     });
-
+    // Reverse the data to make the newest items on top of the scene
     setFilteredPosts(data.reverse());
   }, [posts]);
 
-  console.log(filteredPosts);
+  // console.log(filteredPosts);
 
   return (
     <div className={styles.container}>
@@ -97,9 +98,12 @@ function Home({ data }) {
       </footer>
 
       <div className={styles.scene}>
-        <Canvas className={styles.canvas} shadows={true}>
-          <Experience filteredPosts={filteredPosts} />
-        </Canvas>
+        <Suspense fallback={<p className={styles.loading}>loading ...</p>}>
+          <Canvas className={styles.canvas} shadows={true}>
+            <Experience filteredPosts={filteredPosts} />
+          </Canvas>
+        </Suspense>
+        {/* <Loader /> */}
       </div>
     </div>
   );
