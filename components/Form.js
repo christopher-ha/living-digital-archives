@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import styles from "@/styles/pages/Home.module.scss";
 
-export default function Form({ controlsRef }) {
+export default function Form({ isInvalid }) {
   const router = useRouter();
 
   const handleSubmit = (event) => {
@@ -47,17 +47,26 @@ export default function Form({ controlsRef }) {
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit} autoComplete="off">
-      <input
-        className={styles.form__input}
-        type="search"
-        name="profile"
-        placeholder="Paste your Tumblr handle"
-        spellCheck="false"
-      />
-      <button type="submit" className={styles.form__submit}>
-        Enter
-      </button>
-    </form>
+    <>
+      <form className={styles.form} onSubmit={handleSubmit} autoComplete="off">
+        {isInvalid ? (
+          <p className={styles.form__invalid__text}>
+            The Tumblr you entered could not be found.
+          </p>
+        ) : (
+          ""
+        )}
+        <input
+          className={isInvalid ? styles.form__invalid : styles.form__input}
+          type="search"
+          name="profile"
+          placeholder="Enter your Tumblr handle"
+          spellCheck="false"
+        />
+        <button type="submit" className={styles.form__submit}>
+          Enter
+        </button>
+      </form>
+    </>
   );
 }
