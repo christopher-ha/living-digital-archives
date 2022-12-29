@@ -1,15 +1,15 @@
 import styles from "@/styles/pages/Home.module.scss";
 import { Canvas } from "@react-three/fiber";
-import { useEffect, useRef, useState, Suspense } from "react";
+import { useEffect, useState, Suspense } from "react";
 import Experience from "@/components/Experience";
 import Form from "@/components/Form";
 import { useRouter } from "next/router";
-import { Loader, OrbitControls } from "@react-three/drei";
 
-function Home({ data }) {
+function Home({ data, isInvalid }) {
   const router = useRouter();
   const { blog, posts } = data.response;
   const [filteredPosts, setFilteredPosts] = useState([]);
+  const [modalIsOpen, setIsOpen] = useState(false);
   const profile = router.query.profile;
 
   const extractFirstTumblrUrl = (string) => {
@@ -59,8 +59,6 @@ function Home({ data }) {
     setFilteredPosts(data.reverse());
   }, [posts]);
 
-  // console.log(filteredPosts);
-
   return (
     <div className={styles.container}>
       <div className={styles.overlay}>
@@ -77,9 +75,6 @@ function Home({ data }) {
         ) : (
           <div>
             {/* If there is a profile in the query, render their blog url and avatar */}
-            {/* <img style={{ borderRadius: 4 }} src={blog.avatar[3].url} /> */}
-            {/* <p>{blog.url}</p> */}
-
             {/* Secret message for Valentina <3 */}
             <p>
               {profile === "vallllentina"
@@ -94,7 +89,7 @@ function Home({ data }) {
         <div className={styles.credits}>
           <p>Design & Development @bhris001</p>
         </div>
-        <Form />
+        <Form isInvalid={isInvalid} />
       </footer>
 
       <div className={styles.scene}>
@@ -113,6 +108,7 @@ function Home({ data }) {
 export async function getServerSideProps({ query }) {
   // Pull the user's profile name from the URL query and store it to "profile"
   const profile = query.profile;
+  let isInvalid = false;
 
   // Initialize data (can't do const data  =  ... inside of if/else)
   let data;
@@ -129,6 +125,7 @@ export async function getServerSideProps({ query }) {
       // If the Tumblr blog doesn't exist (404), throw error and send data from oneterabytekilobyteage
     } else if (res.status === 404) {
       console.error(`There is no Tumblr blog with the username ${profile}`);
+      isInvalid = true;
       const res = await fetch(
         `https://api.tumblr.com/v2/blog/oneterabyteofkilobyteage.tumblr.com/posts/photo?api_key=${process.env.API_KEY}&limit=50`
       );
@@ -144,7 +141,7 @@ export async function getServerSideProps({ query }) {
   }
 
   // Pass data to the page via props
-  return { props: { data } };
+  return { props: { data, isInvalid } };
 }
 
 export default Home;

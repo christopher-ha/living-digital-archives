@@ -81,6 +81,26 @@
       top: 0.3rem;
     }
   }
+
+  &__invalid {
+    @extend .form__input;
+    border: 1px solid #ff0033;
+
+    &:focus {
+      outline: #ff0033;
+    }
+
+    &__text {
+      color: #ff0033;
+      position: absolute;
+      top: -1.5rem;
+      left: 0.5rem;
+
+      @include mobile {
+        top: -1rem;
+      }
+    }
+  }
 }
 
 .scene {
