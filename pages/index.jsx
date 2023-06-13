@@ -5,11 +5,49 @@ import Experience from "@/components/Experience";
 import Form from "@/components/Form";
 import { useRouter } from "next/router";
 
-function Home({ data, isInvalid }) {
+async function getData(profile) {
+  let isInvalid = false;
+  console.log(profile);
+
+  // Initialize data (can't do const data  =  ... inside of if/else)
+  let data;
+
+  // If there is a profile name in query params, use that profile as the source for all our images.
+  if (profile) {
+    const res = await fetch(
+      `https://api.tumblr.com/v2/blog/${profile}.tumblr.com/posts/photo?api_key=${process.env.NEXT_PUBLIC_API_KEY}&limit=50`
+    );
+
+    // If the Tumblr blog exists (200), send the data
+    if (res.status === 200) {
+      data = await res.json();
+      // If the Tumblr blog doesn't exist (404), throw error and send data from oneterabytekilobyteage
+    } else if (res.status === 404) {
+      console.error(`There is no Tumblr blog with the username ${profile}`);
+      isInvalid = true;
+      const res = await fetch(
+        `https://api.tumblr.com/v2/blog/oneterabyteofkilobyteage.tumblr.com/posts/photo?api_key=${process.env.NEXT_PUBLIC_API_KEY}&limit=50`
+      );
+      data = await res.json();
+    }
+
+    // If the query params are empty, default to oneterabyteofkilobyteage.
+  } else {
+    const res = await fetch(
+      `https://api.tumblr.com/v2/blog/oneterabyteofkilobyteage.tumblr.com/posts/photo?api_key=${process.env.NEXT_PUBLIC_API_KEY}&limit=50`
+    );
+    data = await res.json();
+  }
+
+  return { data, isInvalid };
+}
+
+export default function Home() {
   const router = useRouter();
-  const { blog, posts } = data.response;
+  const [blog, setBlog] = useState();
+  const [posts, setPosts] = useState();
+  const [isInvalid, setIsInvalid] = useState();
   const [filteredPosts, setFilteredPosts] = useState([]);
-  const [modalIsOpen, setIsOpen] = useState(false);
   const profile = router.query.profile;
 
   const extractFirstTumblrUrl = (string) => {
@@ -30,9 +68,25 @@ function Home({ data, isInvalid }) {
   };
 
   useEffect(() => {
+    async function fetchData() {
+      try {
+        const { data, isInvalid } = await getData(profile);
+
+        setBlog(data.response.blog);
+        setPosts(data.response.posts);
+        setIsInvalid(isInvalid);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchData();
+  }, [profile]);
+
+  useEffect(() => {
     let data = [];
 
-    posts.map((post, i) => {
+    posts?.map((post, i) => {
       // If the type is photo, we extract the first image url from the photos array.
       if (post.type === "photo") {
         data.push({
@@ -111,7 +165,7 @@ export async function getServerSideProps({ query }) {
   let isInvalid = false;
 
   // Initialize data (can't do const data  =  ... inside of if/else)
-  let data;
+  let data = null;
 
   // If there is a profile name in query params, use that profile as the source for all our images.
   if (profile) {
@@ -137,11 +191,10 @@ export async function getServerSideProps({ query }) {
     const res = await fetch(
       `https://api.tumblr.com/v2/blog/oneterabyteofkilobyteage.tumblr.com/posts/photo?api_key=${process.env.API_KEY}&limit=50`
     );
+    console.log(data);
     data = await res.json();
   }
 
   // Pass data to the page via props
   return { props: { data, isInvalid } };
 }
-
-export default Home;

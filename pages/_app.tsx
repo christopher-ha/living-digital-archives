@@ -16,10 +16,7 @@ export default function App({ Component, pageProps }: AppProps) {
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1"
         ></meta>
-        <link
-          rel="icon"
-          href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/325/bubbles_1fae7.png"
-        />
+        <link rel="icon" href="/favicon/favicon.ico" />
 
         <meta
           property="og:url"
