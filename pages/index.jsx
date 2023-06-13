@@ -71,7 +71,6 @@ export default function Home() {
     async function fetchData() {
       try {
         const { data, isInvalid } = await getData(profile);
-
         setBlog(data.response.blog);
         setPosts(data.response.posts);
         setIsInvalid(isInvalid);
@@ -156,45 +155,4 @@ export default function Home() {
       </div>
     </div>
   );
-}
-
-// This gets called on every request
-export async function getServerSideProps({ query }) {
-  // Pull the user's profile name from the URL query and store it to "profile"
-  const profile = query.profile;
-  let isInvalid = false;
-
-  // Initialize data (can't do const data  =  ... inside of if/else)
-  let data = null;
-
-  // If there is a profile name in query params, use that profile as the source for all our images.
-  if (profile) {
-    const res = await fetch(
-      `https://api.tumblr.com/v2/blog/${profile}.tumblr.com/posts/photo?api_key=${process.env.API_KEY}&limit=50`
-    );
-
-    // If the Tumblr blog exists (200), send the data
-    if (res.status === 200) {
-      data = await res.json();
-      // If the Tumblr blog doesn't exist (404), throw error and send data from oneterabytekilobyteage
-    } else if (res.status === 404) {
-      console.error(`There is no Tumblr blog with the username ${profile}`);
-      isInvalid = true;
-      const res = await fetch(
-        `https://api.tumblr.com/v2/blog/oneterabyteofkilobyteage.tumblr.com/posts/photo?api_key=${process.env.API_KEY}&limit=50`
-      );
-      data = await res.json();
-    }
-
-    // If the query params are empty, default to oneterabyteofkilobyteage.
-  } else {
-    const res = await fetch(
-      `https://api.tumblr.com/v2/blog/oneterabyteofkilobyteage.tumblr.com/posts/photo?api_key=${process.env.API_KEY}&limit=50`
-    );
-    console.log(data);
-    data = await res.json();
-  }
-
-  // Pass data to the page via props
-  return { props: { data, isInvalid } };
 }
