@@ -1,8 +1,15 @@
-import { useRouter } from "next/router";
+"use client";
+
 import styles from "@/styles/pages/Home.module.scss";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 export default function Form({ isInvalid }) {
   const router = useRouter();
+  // const pathname = usePathname();
+  // const searchParams = useSearchParams();
+  // console.log("router", router);
+  // console.log("pathname", pathname);
+  // console.log("searchParams", searchParams);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -40,10 +47,12 @@ export default function Form({ isInvalid }) {
       username = inputValue;
     }
 
-    router.push({
-      pathname: router.pathname,
-      query: { profile: username },
-    });
+    router.push(`?profile=${username}`);
+
+    // router.push({
+    //   pathname: router.pathname,
+    //   query: { profile: username },
+    // });
   };
 
   return (

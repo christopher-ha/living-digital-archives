@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Bounds,
   useBounds,
@@ -8,6 +10,8 @@ import Sphere from "@/components/Sphere";
 import { useEffect } from "react";
 
 export default function Experience({ filteredPosts }) {
+  console.log("Experience:", filteredPosts);
+
   return (
     <>
       <OrbitControls
@@ -23,7 +27,7 @@ export default function Experience({ filteredPosts }) {
       <Bounds>
         <SelectToZoom filteredPosts={filteredPosts}>
           <group>
-            {filteredPosts?.map((post, index) => {
+            {filteredPosts.map((post, index) => {
               return <Sphere key={post.id} post={post} index={index} />;
             })}
             {/* <gridHelper />
