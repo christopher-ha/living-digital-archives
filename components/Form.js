@@ -1,9 +1,8 @@
-import { useRouter } from "next/router";
+"use client";
+
 import styles from "@/styles/pages/Home.module.scss";
 
 export default function Form({ isInvalid }) {
-  const router = useRouter();
-
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -40,10 +39,10 @@ export default function Form({ isInvalid }) {
       username = inputValue;
     }
 
-    router.push({
-      pathname: router.pathname,
-      query: { profile: username },
-    });
+    // router.push({
+    //   pathname: router.pathname,
+    //   query: { profile: username },
+    // });
   };
 
   return (

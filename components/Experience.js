@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Bounds,
   useBounds,
@@ -23,7 +25,7 @@ export default function Experience({ filteredPosts }) {
       <Bounds>
         <SelectToZoom filteredPosts={filteredPosts}>
           <group>
-            {filteredPosts?.map((post, index) => {
+            {filteredPosts.map((post, index) => {
               return <Sphere key={post.id} post={post} index={index} />;
             })}
             {/* <gridHelper />
