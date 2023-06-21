@@ -10,6 +10,8 @@ import Sphere from "@/components/Sphere";
 import { useEffect } from "react";
 
 export default function Experience({ filteredPosts }) {
+  console.log("Experience:", filteredPosts);
+
   return (
     <>
       <OrbitControls

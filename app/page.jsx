@@ -1,6 +1,7 @@
 import styles from "@/styles/pages/Home.module.scss";
 import Form from "@/components/Form";
 import Body from "../components/Body";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 const extractFirstTumblrUrl = (string) => {
   // Use a regular expression to find the first url in the string that
@@ -50,18 +51,19 @@ const filterPosts = (posts) => {
 };
 
 async function getData(profile) {
-  let data = [];
+  let data = {};
+  let isInvalid = false;
 
   if (profile) {
     const res = await fetch(
       `https://api.tumblr.com/v2/blog/${profile}.tumblr.com/posts/photo?api_key=${process.env.API_KEY}&limit=50`
     );
-
     // If the Tumblr blog exists (200), send the data
     if (res.status === 200) {
       data = await res.json();
       // If the Tumblr blog doesn't exist (404), throw error and send data from oneterabytekilobyteage
     } else if (res.status === 404) {
+      isInvalid = true;
       console.error(`There is no Tumblr blog with the username ${profile}`);
       const res = await fetch(
         `https://api.tumblr.com/v2/blog/oneterabyteofkilobyteage.tumblr.com/posts/photo?api_key=${process.env.API_KEY}&limit=50`
@@ -75,15 +77,16 @@ async function getData(profile) {
     data = await res.json();
   }
 
-  return filterPosts(data.response.posts);
+  return {
+    blog: data.response.blog.url,
+    filteredPosts: filterPosts(data.response.posts),
+    isInvalid: isInvalid,
+  };
 }
 
-export default async function Home({ params }) {
-  const profile = params.profile;
+export default async function Home({ searchParams }) {
+  const profile = searchParams.profile;
   const data = await getData(profile);
-  const isInvalid = false; // temporary fix
-
-  // console.log(profile);
 
   return (
     <div className={styles.container}>
@@ -105,19 +108,19 @@ export default async function Home({ params }) {
             <p>
               {profile === "vallllentina"
                 ? `i can stalk your Tumblr from here now <3 i love you`
-                : blog?.url}
+                : data.blog}
             </p>
           </div>
         )}
       </div>
 
-      <Body filteredPosts={data} />
+      <Body filteredPosts={data.filteredPosts} />
 
       <footer className={styles.footer}>
         <div className={styles.credits}>
           <p>Design & Development @bhris001</p>
         </div>
-        <Form isInvalid={isInvalid} />
+        <Form isInvalid={data.isInvalid} />
       </footer>
     </div>
   );
