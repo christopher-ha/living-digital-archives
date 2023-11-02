@@ -9,7 +9,7 @@ I had always wished you could see new art when you revisit a museum, so I develo
 
 You can paste your Tumblr URL and create a world with your photos/reblogs.
 
-<a href="https://lda.bhris.digital/"><img src="https://living-digital-archives.vercel.app/og_image.jpg"/></a>
+<a href="https://lda.bhris.digital/"><img src="https://lda.bhris.digital/og_image.jpg"/></a>
 
 Images sourced via Tumblr bot: <a href="https://oneterabyteofkilobyteage.tumblr.com/">oneterabyteofkilobyteage</a> <br>
 Developed with Next.js (react framework) / react-three-fiber (3d / three.js) / Tumblr API (data fetching).
