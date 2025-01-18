@@ -106,7 +106,7 @@ export default async function Home({ searchParams }) {
             {/* If there is a profile in the query, render their blog url and avatar */}
             {/* Secret message for Valentina <3 */}
             <p>
-              {profile === "vallllentina"
+              {profile === "serpentskirtgirl"
                 ? `i can stalk your Tumblr from here now <3 i love you`
                 : data.blog}
             </p>
@@ -118,7 +118,7 @@ export default async function Home({ searchParams }) {
 
       <footer className={styles.footer}>
         <div className={styles.credits}>
-          <p>Design & Development @bhris001</p>
+          <p>Design & Development by Christopher Ha</p>
         </div>
         <Form isInvalid={data.isInvalid} />
       </footer>

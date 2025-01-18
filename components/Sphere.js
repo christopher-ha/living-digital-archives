@@ -15,6 +15,8 @@ export default function Sphere({ post, index }) {
     sphereRef.current.rotation.y += delta * 0.1;
   });
 
+  console.log(post);
+
   const handleClick = () => {
     // Subtract the time between the user ending their click and starting it. If it's less than 100ms (usually a click is around 60ms), then register it as a click.
     // If they drag around the scene to orbit the camera, this value will be 1000ms+ typically. We do not want to register a click under those conditions.
