@@ -1,4 +1,4 @@
-# 𝓁𝒾𝓋𝒾𝓃𝑔 𝒹𝒾𝑔𝒾𝓉𝒶𝓁 𝒶𝓇𝒸𝒽𝒾𝓋𝑒𝓈
+# [Living Digital Archives](https://lda.bhris.digital/)
 
 Design & Development by Christopher Ha<br>
 https://living-digital-archives.vercel.app/
